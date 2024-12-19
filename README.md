@@ -1,4 +1,4 @@
-# Project Proposal: Analysis of Instagram Message Data
+# Project Proposal: Analysis of Instagram Message Data - Abdullah Ahmad DSA 210
 
 ## **Objective:**
 The goal of this project is to analyze my Instagram usage, specifically the messages exchanged with a particular friend over time. The data for this analysis is obtained from Instagram's data export feature, which provides message records in HTML format. I aim to parse this data, conduct a hypothesis test, and visualize the findings to determine whether I send more messages than my friend.
