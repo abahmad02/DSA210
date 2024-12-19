@@ -18,8 +18,13 @@ Update:
 As of 20/12/2024, the tests stand completed and the results are below:
 
 Total Messages Sent by You: 18845
+
 Total Messages Sent by Your Friend: 13730
-T-statistic: 13.048222595450989, P-value: 8.914263682981865e-38
+
+T-statistic: 13.048222595450989
+
+P-value: 8.914263682981865e-38
+
 Reject the null hypothesis: You send more messages than your friend.
 
 These are records from 15th Nov 2021 till 11th Nov 2024
