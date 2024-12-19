@@ -52,6 +52,6 @@ The goal of this project is to analyze my Instagram usage, specifically the mess
 ## **Conclusion:**
 - Based on the results of the t-test and the visualizations, the hypothesis that I send more messages than my friend is supported by the data. The statistical evidence shows that I have sent significantly more messages overall and on a weekly basis. This analysis --   demonstrates how Instagram message data can be used to analyze personal communication patterns.
 
-- ![Weekly Message Count Chart](https://imgur.com/a/52Qsljn)
+- ![Weekly Message Count Chart](Figure_2.png)
 
 The chart above visualizes the number of messages exchanged on a weekly basis.
