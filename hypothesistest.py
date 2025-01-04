@@ -104,34 +104,4 @@ def plot_monthly_message_counts(monthly_counts):
     plt.show()
 
 # Uncomment the line below to generate the plot
-#plot_monthly_message_counts(monthly_counts)
-
-your_heatmap_data = your_messages.groupby(['Day', 'Hour']).size().unstack(fill_value=0).T
-print(your_heatmap_data)
-friend_heatmap_data = friend_messages.groupby(['Day', 'Hour']).size().unstack(fill_value=0).T
-
-# Ensure days of the week are ordered correctly
-ordered_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-your_heatmap_data = your_heatmap_data.reindex(columns=ordered_days)
-friend_heatmap_data = friend_heatmap_data.reindex(columns=ordered_days)
-
-# Plot heatmaps
-fig, axes = plt.subplots(1, 2, figsize=(16, 8))
-
-sns.heatmap(your_heatmap_data, ax=axes[0], cmap="YlGnBu", cbar=True, annot=False)
-axes[0].set_title("Your Message Activity")
-axes[0].set_xlabel("Day of Week")
-axes[0].set_ylabel("Hour of Day")
-axes[0].invert_yaxis() 
-
-sns.heatmap(friend_heatmap_data, ax=axes[1], cmap="YlGnBu", cbar=True, annot=False)
-axes[1].set_title("Friend's Message Activity")
-axes[1].set_xlabel("Day of Week")
-axes[1].set_ylabel("Hour of Day")
-axes[1].invert_yaxis()
-
-plt.tight_layout()
-plt.show()
-
-
-
+plot_monthly_message_counts(monthly_counts)
