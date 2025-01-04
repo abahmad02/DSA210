@@ -3,6 +3,9 @@ import glob
 from scipy.stats import ttest_ind
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import seaborn as sns
+import scipy.stats as stats
+import numpy as np
 
 # Function to load data from a list of files
 def load_data(file_list):
@@ -96,4 +99,50 @@ def plot_monthly_message_counts(monthly_counts):
     plt.show()
 
 # Uncomment the line below to generate the plot
-plot_monthly_message_counts(monthly_counts)
+#plot_monthly_message_counts(monthly_counts)
+
+def plot_contour_month_hour_12hr_fixed(messages, title, cmap="coolwarm"):
+    # Ensure Timestamp column is parsed correctly
+    messages['Timestamp'] = pd.to_datetime(messages['Timestamp'], format='%b %d, %Y %I:%M %p', errors='coerce')
+    messages = messages.dropna(subset=['Timestamp'])  # Drop rows with invalid timestamps
+
+    # Extract month and hour (adjust hour for AM/PM)
+    x = messages['Timestamp'].dt.month  # Month for x-axis
+    hour = messages['Timestamp'].dt.hour  # Hour in 24-hour format
+    y = hour.apply(lambda h: h if h != 0 else 12)  # Convert midnight/noon (0) to 12-hour format
+    am_pm = messages['Timestamp'].dt.strftime('%p')  # AM or PM
+
+    # Shift PM hours for proper plotting
+    y += (am_pm == 'PM') * 12
+
+    # Perform kernel density estimation
+    values = np.vstack([x, y])
+    kde = stats.gaussian_kde(values)
+    xi, yi = np.mgrid[1:13:100j, 1:25:100j]
+    zi = kde(np.vstack([xi.flatten(), yi.flatten()]))
+
+    # Plot contour map
+    plt.figure(figsize=(12, 8))
+    plt.contourf(xi, yi, zi.reshape(xi.shape), levels=20, cmap=cmap)
+    plt.colorbar(label="Density")
+    plt.title(title)
+    plt.xlabel("Month")
+    plt.ylabel("Hour (12-hour Format)")
+    plt.xticks(range(1, 13), [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ], rotation=45)
+    plt.yticks(
+        range(1, 25),
+        [f"{h} AM" for h in range(1, 13)] + [f"{h} PM" for h in range(1, 13)]
+    )
+    plt.tight_layout()
+    plt.show()
+
+# Plot contour plots for both datasets
+plot_contour_month_hour_12hr_fixed(your_messages, "Contour Plot of Your Messages (Month vs Hour)", cmap="Blues")
+plot_contour_month_hour_12hr_fixed(friend_messages, "Contour Plot of Friend's Messages (Month vs Hour)", cmap="Reds")
+
+
+
+
