@@ -2,6 +2,7 @@ import pandas as pd
 import glob
 from scipy.stats import ttest_ind
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 
 # Function to load data from a list of files
 def load_data(file_list):
@@ -44,33 +45,55 @@ if p_value < 0.05:
 else:
     print("Fail to reject the null hypothesis: There is no significant evidence that you send more messages than your friend.")
 
-# Visualization of daily message count
-# Combine both datasets with a Sender column
-# Group by week (starting on Sunday by default) and Sender to count messages per week
-your_messages['Week'] = your_messages['Timestamp'].dt.to_period('W').dt.start_time
-friend_messages['Week'] = friend_messages['Timestamp'].dt.to_period('W').dt.start_time
-
-your_messages['Sender'] = 'You'
-friend_messages['Sender'] = 'Friend'
+# Add year and month columns
+your_messages['Year'] = your_messages['Timestamp'].dt.year
+your_messages['Month'] = your_messages['Timestamp'].dt.month
+friend_messages['Year'] = friend_messages['Timestamp'].dt.year
+friend_messages['Month'] = friend_messages['Timestamp'].dt.month
 
 # Combine both datasets
+your_messages['Sender'] = 'You'
+friend_messages['Sender'] = 'Friend'
 all_messages = pd.concat([your_messages, friend_messages], ignore_index=True)
 
-# Group by 'Week' and 'Sender' to count messages per week
-weekly_counts = all_messages.groupby(['Week', 'Sender']).size().unstack(fill_value=0)
+# Group by Year, Month, and Sender to count messages per month
+monthly_counts = all_messages.groupby(['Year', 'Month', 'Sender']).size().unstack(fill_value=0)
 
-# Plot weekly message counts
-def plot_weekly_message_counts(weekly_counts):
-    plt.figure(figsize=(12, 6))
-    weekly_counts.plot(kind='bar', stacked=True, figsize=(12, 6), alpha=0.8)
-    plt.title('Weekly Message Count by Sender')
-    plt.xlabel('Week')
-    plt.ylabel('Message Count')
-    plt.legend(title='Sender')
-    plt.xticks(rotation=90)
+# Fill in missing months for each year
+all_months = pd.MultiIndex.from_product([
+    sorted(all_messages['Year'].unique()), range(1, 13)
+], names=['Year', 'Month'])
+monthly_counts = monthly_counts.reindex(all_months, fill_value=0)
+
+# Drop rows with NaN years (if any)
+monthly_counts = monthly_counts.dropna()
+
+# Ensure all years are correctly captured from the dataset
+all_years = sorted(all_messages['Year'].dropna().unique())
+
+# Plot monthly message counts using a gridspec layout
+def plot_monthly_message_counts(monthly_counts):
+    num_years = len(all_years)
+    rows = (num_years + 1) // 2  # Calculate rows for grid layout
+    fig = plt.figure(figsize=(16, 6 * rows))
+    spec = gridspec.GridSpec(rows, 2, figure=fig)
+    axes = [fig.add_subplot(spec[i // 2, i % 2]) for i in range(num_years)]
+
+    for i, year in enumerate(all_years):
+        ax = axes[i]
+        yearly_data = monthly_counts.loc[year]
+        yearly_data.plot(kind='bar', stacked=True, ax=ax, alpha=0.8)
+        ax.set_title(f'Monthly Message Count for {year}')
+        ax.set_xlabel('Month')
+        ax.set_ylabel('Message Count')
+        ax.legend(title='Sender')
+        ax.set_xticks(range(12))
+        ax.set_xticklabels([
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ], rotation=45)
+
     plt.tight_layout()
     plt.show()
 
 # Uncomment the line below to generate the plot
-plot_weekly_message_counts(weekly_counts)
-
+plot_monthly_message_counts(monthly_counts)
