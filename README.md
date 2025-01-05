@@ -7,20 +7,20 @@ The goal of this project is to analyze my Instagram usage, specifically the mess
 
 ## **Methodology:**
 
-### 1. **Data Collection:**
+## 1. **Data Collection:**
 - The raw message data is exported from Instagram in HTML format via Instagram's data request feature.
 - Using Python's **BeautifulSoup** library, the HTML data is parsed to extract relevant details such as the sender, message content, and timestamp.
 
-### 2. **Data Parsing:**
+## 2. **Data Parsing:**
 - After extracting the necessary data, I save it in CSV format for easier processing and further analysis. 
 - **Pandas** is used to create and manipulate DataFrames, which allows for efficient data cleaning, organization, and aggregation.
 
-### 3. **Data Analysis:**
+## 3. **Data Analysis:**
 - The parsed data is loaded into Pandas DataFrames for analysis.
 - I first separate messages sent by me (Abdullah Ahmad) and my friend into distinct datasets.
 - Using statistical tests, we compare the overall number of messages sent, reel-sharing behavior, and hashtag trends.
 
-### 4. **Hypotheses:**
+## 4. **Hypotheses:**
 1. Overall Message Activity
    - **Null Hypothesis (H₀):** I and my friend send an equal proportion of messages.
    - **Alternative Hypothesis (H₁):** I send more messages than my friend.
@@ -31,47 +31,47 @@ The goal of this project is to analyze my Instagram usage, specifically the mess
    - **Null Hypothesis (H₀):** There is no significant difference in mine or my friend's reel-sharing activity between weekdays and weekends
    - **Alternative Hypothesis (H₁):** There is a significant difference in my mine or my friend's reel-sharing activity between weekdays and weekends.
 
-### 5. **Statistical Tests:**
+## 5. **Statistical Tests:**
 - The **t-test** and **z-test** are used to determine the results of the hypothesese above. 
 - The results of the tests, including the T and Z statistics and P-values, are used to decide whether to reject or fail to reject the null hypotheses for the above claims.
 
-### 6. **Visualization:**
-## Monthly Message Count Bar Charts
+## 6. **Visualization:**
+### **Monthly Message Count Bar Charts**
 
 Purpose: Displays the monthly message counts for each year, categorized by sender.
 Visualization Method: Stacked bar charts, plotted for each year using matplotlib.
 
-## Heatmaps of Message Activity
+### **Heatmaps of Message Activity**
 
 Purpose: Visualizes the distribution of message activity across days of the week and hours of the day for both users.
 Visualization Method: Heatmaps created using seaborn.
 
-## Pie Charts of Message and Reel Proportions
+### **Pie Charts of Message and Reel Proportions**
 
 Purpose: Shows the proportion of regular messages versus reels for each sender.
 Visualization Method: Pie charts, plotted separately for each sender using matplotlib.
 
-## Bar Charts for Message and Reel Counts
+### **Bar Charts for Message and Reel Counts**
 
 Purpose: Provides a breakdown of the counts for regular messages and reels for each sender.
 Visualization Method: Side-by-side bar charts using matplotlib.
 
-## Hourly and Daily Message Counts
+### **Hourly and Daily Message Counts**
 
 Purpose: Displays the frequency of messages sent by hour of the day and by day of the week.
 Visualization Method: Bar charts using matplotlib.
 
-## T-Distribution vs Normal Distribution Plot
+### **T-Distribution vs Normal Distribution Plot**
 
 Purpose: Compares the t-distribution to a normal distribution for hypothesis testing results.
 Visualization Method: Line plots of distributions, with t-statistic markers using matplotlib.
 
-## Top Hashtags Bar Charts
+### **Top Hashtags Bar Charts**
 
 Purpose: Highlights the top 10 hashtags used by each sender.
 Visualization Method: Horizontal bar charts created using seaborn.
 
-## Hashtag Usage Over Time
+### **Hashtag Usage Over Time**
 
 Purpose: Shows trends in hashtag usage over time (grouped by month and year).
 Visualization Method: Line charts with markers using matplotlib.
