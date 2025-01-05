@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import seaborn as sns
 import numpy as np
-
+import re
+from collections import Counter
 
 # Function to load data from a list of files
 def load_data(file_list):
@@ -221,4 +222,86 @@ if p_value_friend < 0.05:
     print("Significant difference in your friend's reel-sharing activity between weekdays and weekends.")
 else:
     print("No significant difference in your friend's reel-sharing activity between weekdays and weekends.")
+
+# Function to extract hashtags from content
+def extract_hashtags(content):
+    if isinstance(content, str):
+        return re.findall(r"#\w+", content)
+    return []
+
+# Extract hashtags from your and your friend's messages
+your_messages['Hashtags'] = your_messages['Content'].apply(extract_hashtags)
+friend_messages['Hashtags'] = friend_messages['Content'].apply(extract_hashtags)
+
+# Flatten and count hashtag frequencies
+your_hashtag_counts = Counter([hashtag for hashtags in your_messages['Hashtags'] for hashtag in hashtags])
+friend_hashtag_counts = Counter([hashtag for hashtags in friend_messages['Hashtags'] for hashtag in hashtags])
+
+# Convert to DataFrame for visualization
+your_hashtag_df = pd.DataFrame(your_hashtag_counts.items(), columns=['Hashtag', 'Count']).sort_values(by='Count', ascending=False)
+friend_hashtag_df = pd.DataFrame(friend_hashtag_counts.items(), columns=['Hashtag', 'Count']).sort_values(by='Count', ascending=False)
+
+# Display top hashtags
+print("Top Hashtags in Your Messages:")
+print(your_hashtag_df.head(10))
+
+print("\nTop Hashtags in Friend's Messages:")
+print(friend_hashtag_df.head(10))
+
+# Plot top hashtags for you and your friend
+def plot_top_hashtags(hashtag_df, title):
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x='Count', y='Hashtag', data=hashtag_df.head(10), palette='viridis')
+    plt.title(title)
+    plt.xlabel('Count')
+    plt.ylabel('Hashtag')
+    plt.tight_layout()
+    plt.show()
+
+plot_top_hashtags(your_hashtag_df, "Top 10 Hashtags in Your Messages")
+plot_top_hashtags(friend_hashtag_df, "Top 10 Hashtags in Friend's Messages")
+
+# Find overlapping hashtags
+your_hashtags_set = set(your_hashtag_counts.keys())
+friend_hashtags_set = set(friend_hashtag_counts.keys())
+common_hashtags = your_hashtags_set.intersection(friend_hashtags_set)
+
+print(f"Number of common hashtags: {len(common_hashtags)}")
+print(f"Common Hashtags: {list(common_hashtags)[:10]}")
+
+# Add a column for number of hashtags in each message
+your_messages['Num_Hashtags'] = your_messages['Hashtags'].apply(len)
+friend_messages['Num_Hashtags'] = friend_messages['Hashtags'].apply(len)
+
+# Group by month and year
+your_hashtag_trends = your_messages.groupby(['Year', 'Month'])['Num_Hashtags'].sum()
+friend_hashtag_trends = friend_messages.groupby(['Year', 'Month'])['Num_Hashtags'].sum()
+
+# Plot trends
+def plot_hashtag_trends(trends, title):
+    trends.plot(kind='line', marker='o', figsize=(10, 6), title=title, xlabel="Time", ylabel="Number of Hashtags")
+    plt.grid()
+    plt.show()
+
+plot_hashtag_trends(your_hashtag_trends, "Your Hashtag Usage Over Time")
+plot_hashtag_trends(friend_hashtag_trends, "Friend's Hashtag Usage Over Time")
+
+from textblob import TextBlob
+
+# Function to compute sentiment
+def compute_sentiment(content):
+    if isinstance(content, str):
+        return TextBlob(content).sentiment.polarity
+    return 0
+
+# Add sentiment scores
+your_messages['Sentiment'] = your_messages['Content'].apply(compute_sentiment)
+friend_messages['Sentiment'] = friend_messages['Content'].apply(compute_sentiment)
+
+# Analyze sentiment for messages containing hashtags
+your_hashtag_sentiment = your_messages[your_messages['Num_Hashtags'] > 0]['Sentiment'].mean()
+friend_hashtag_sentiment = friend_messages[friend_messages['Num_Hashtags'] > 0]['Sentiment'].mean()
+
+print(f"Average Sentiment of Your Hashtag Messages: {your_hashtag_sentiment:.2f}")
+print(f"Average Sentiment of Friend's Hashtag Messages: {friend_hashtag_sentiment:.2f}")
 
