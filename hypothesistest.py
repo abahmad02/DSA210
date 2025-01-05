@@ -1,12 +1,13 @@
 import pandas as pd
 import glob
-from scipy.stats import ttest_ind
+from scipy.stats import ttest_ind, t, norm
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import seaborn as sns
 import numpy as np
 import re
 from collections import Counter
+from textblob import TextBlob
 
 # Function to load data from a list of files
 def load_data(file_list):
@@ -20,6 +21,8 @@ def load_data(file_list):
 # Load message data
 your_files = sorted(glob.glob("your_messages_*.csv"))
 friend_files = sorted(glob.glob("friend_messages_*.csv"))
+print("Your Files:", your_files)
+print("Friend Files:", friend_files)
 your_messages = load_data(your_files)
 friend_messages = load_data(friend_files)
 
@@ -28,6 +31,26 @@ your_messages['Hour'] = pd.to_datetime(your_messages['Time'], errors='coerce').d
 your_messages['Day'] = pd.to_datetime(your_messages['Date'], errors='coerce').dt.day_name()
 friend_messages['Hour'] = pd.to_datetime(friend_messages['Time'], errors='coerce').dt.hour
 friend_messages['Day'] = pd.to_datetime(friend_messages['Date'], errors='coerce').dt.day_name()
+
+your_hourly_counts = your_messages.groupby('Hour').size()
+your_daily_counts = your_messages.groupby('Day').size()
+friend_hourly_counts = friend_messages.groupby('Hour').size()
+friend_daily_counts = friend_messages.groupby('Day').size()
+
+print("Your messages count by hour:\n", your_hourly_counts)
+print("Your messages count by day:\n", your_daily_counts)
+print("Friend's messages count by hour:\n", friend_hourly_counts)
+print("Friend's messages count by day:\n", friend_daily_counts)
+
+your_messages['Timestamp'] = pd.to_datetime(
+    your_messages['Timestamp'], format='%b %d, %Y %I:%M %p', errors='coerce'
+)
+
+friend_messages['Timestamp'] = pd.to_datetime(
+    friend_messages['Timestamp'], format='%b %d, %Y %I:%M %p', errors='coerce'
+)
+
+print("Your Messages:" , your_messages['Day'])
 
 # Count total messages
 your_message_count = len(your_messages)
@@ -166,10 +189,43 @@ def plot_message_reel_proportions_bar(type_counts):
     plt.show()
 
 # Uncomment to plot
-#plot_monthly_message_counts(monthly_counts)
-#plot_heatmaps(your_heatmap_data, friend_heatmap_data)
-#plot_message_reel_proportions_pie(type_counts)
-#plot_message_reel_proportions_bar(type_counts)
+
+plot_monthly_message_counts(monthly_counts)
+
+# Plotting the bar graphs
+fig = plt.figure(figsize=(14, 10))
+gs = fig.add_gridspec(2, 2)
+
+ax1 = fig.add_subplot(gs[0, 0])
+ax1.bar(your_hourly_counts.index, your_hourly_counts.values)
+ax1.set_title("Your Messages by Hour")
+ax1.set_xlabel("Hour")
+ax1.set_ylabel("Count")
+
+ax2 = fig.add_subplot(gs[0, 1])
+ax2.bar(your_daily_counts.index, your_daily_counts.values)
+ax2.set_title("Your Messages by Day")
+ax2.set_xlabel("Day")
+ax2.set_ylabel("Count")
+
+ax3 = fig.add_subplot(gs[1, 0])
+ax3.bar(friend_hourly_counts.index, friend_hourly_counts.values)
+ax3.set_title("Friend's Messages by Hour")
+ax3.set_xlabel("Hour")
+ax3.set_ylabel("Count")
+
+ax4 = fig.add_subplot(gs[1, 1])
+ax4.bar(friend_daily_counts.index, friend_daily_counts.values)
+ax4.set_title("Friend's Messages by Day")
+ax4.set_xlabel("Day")
+ax4.set_ylabel("Count")
+
+plt.tight_layout()
+plt.show()
+
+plot_heatmaps(your_heatmap_data, friend_heatmap_data)
+plot_message_reel_proportions_pie(type_counts)
+plot_message_reel_proportions_bar(type_counts)
 
 # Classify messages into weekdays and weekends
 def classify_day_type(day):
@@ -222,6 +278,51 @@ if p_value_friend < 0.05:
     print("Significant difference in your friend's reel-sharing activity between weekdays and weekends.")
 else:
     print("No significant difference in your friend's reel-sharing activity between weekdays and weekends.")
+
+def plot_t_and_normal_distribution(t_stat, df, title, color):
+    """
+    Plot a t-distribution with a normal distribution overlay, with the t-statistic marked.
+    
+    Parameters:
+        t_stat (float): The t-statistic value.
+        df (int): Degrees of freedom.
+        title (str): Title for the plot.
+        color (str): Color for the t-distribution plot.
+    """
+    # Generate x-axis values
+    x = np.linspace(-4, 4, 1000)
+    
+    # Generate t-distribution and normal distribution values
+    t_dist = t.pdf(x, df)
+    normal_dist = norm.pdf(x)
+    
+    # Plot the distributions
+    plt.figure(figsize=(10, 6))
+    plt.plot(x, t_dist, color=color, label=f"t-distribution (df={df})", linewidth=2)
+    plt.plot(x, normal_dist, color="orange", linestyle="--", label="Normal distribution", linewidth=2)
+    
+    # Mark the t-statistic
+    plt.axvline(t_stat, color="red", linestyle="--", label=f"t-statistic: {t_stat:.2f}")
+    plt.axvline(-t_stat, color="red", linestyle="--", alpha=0.5, label=f"Opposite t-stat: {-t_stat:.2f}")
+    
+    # Add labels, legend, and grid
+    plt.title(title)
+    plt.xlabel("t-value / z-value")
+    plt.ylabel("Density")
+    plt.legend()
+    plt.grid()
+    plt.tight_layout()
+    plt.show()
+
+# Degrees of freedom calculation
+your_df = len(your_weekday_counts) + len(your_weekend_counts) - 2
+friend_df = len(friend_weekday_counts) + len(friend_weekend_counts) - 2
+
+# Plot t- and normal distributions
+plot_t_and_normal_distribution(t_stat_your, your_df, "Your Reel Sharing: T vs Normal Distribution", color="blue")
+plot_t_and_normal_distribution(t_stat_friend, friend_df, "Friend's Reel Sharing: T vs Normal Distribution", color="green")
+
+# Hashtag testing
 
 # Function to extract hashtags from content
 def extract_hashtags(content):
@@ -285,8 +386,6 @@ def plot_hashtag_trends(trends, title):
 
 plot_hashtag_trends(your_hashtag_trends, "Your Hashtag Usage Over Time")
 plot_hashtag_trends(friend_hashtag_trends, "Friend's Hashtag Usage Over Time")
-
-from textblob import TextBlob
 
 # Function to compute sentiment
 def compute_sentiment(content):
