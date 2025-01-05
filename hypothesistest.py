@@ -1,6 +1,7 @@
 import pandas as pd
 import glob
-from scipy.stats import ttest_ind, t, norm
+from scipy.stats import ttest_ind, t, norm,ttest_ind_from_stats
+from statsmodels.stats.proportion import proportions_ztest
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import seaborn as sns
@@ -14,7 +15,7 @@ def load_data(file_list):
     combined_data = pd.DataFrame()
     for file in file_list:
         df = pd.read_csv(file)
-        df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')  # Ensure Timestamp is datetime
+        df['Timestamp'] = pd.to_datetime(df['Timestamp'], format='%b %d, %Y %I:%M %p', errors='coerce')  # Ensure Timestamp is datetime
         combined_data = pd.concat([combined_data, df], ignore_index=True)
     return combined_data
 
@@ -111,6 +112,26 @@ all_messages = pd.concat([your_messages, friend_messages], ignore_index=True)
 type_counts = all_messages.groupby(['Sender', 'Type']).size().unstack(fill_value=0)
 type_counts['Proportion'] = type_counts['Reel'] / (type_counts['Reel'] + type_counts['Message'])
 print(type_counts)
+
+# Hypothesis test
+your_reels = type_counts.loc['You', 'Reel']
+your_total = type_counts.loc['You', 'Reel'] + type_counts.loc['You', 'Message']
+friend_reels = type_counts.loc['Friend', 'Reel']
+friend_total = type_counts.loc['Friend', 'Reel'] + type_counts.loc['Friend', 'Message']
+
+# Observed successes (reels sent) and total trials (messages sent)
+counts = [your_reels, friend_reels]
+nobs = [your_total, friend_total]
+
+# Perform a one-sided z-test
+z_stat, p_value = proportions_ztest(counts, nobs, alternative='larger')
+
+print(f"Z-statistic: {z_stat:.3f}, P-value: {p_value:.3f}")
+if p_value < 0.05:
+    print("Reject the null hypothesis: You send more reels than your friend.")
+else:
+    print("Fail to reject the null hypothesis: There is no significant evidence that you send more reels than your friend.")
+    
 # Visualization functions
 def plot_monthly_message_counts(monthly_counts):
     num_years = len(monthly_counts.index.levels[0])
