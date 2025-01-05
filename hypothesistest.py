@@ -6,6 +6,7 @@ import matplotlib.gridspec as gridspec
 import seaborn as sns
 import numpy as np
 
+
 # Function to load data from a list of files
 def load_data(file_list):
     combined_data = pd.DataFrame()
@@ -85,7 +86,7 @@ friend_messages['Type'] = friend_messages['Content'].apply(lambda x: categorize_
 all_messages = pd.concat([your_messages, friend_messages], ignore_index=True)
 type_counts = all_messages.groupby(['Sender', 'Type']).size().unstack(fill_value=0)
 type_counts['Proportion'] = type_counts['Reel'] / (type_counts['Reel'] + type_counts['Message'])
-
+print(type_counts)
 # Visualization functions
 def plot_monthly_message_counts(monthly_counts):
     num_years = len(monthly_counts.index.levels[0])
@@ -147,8 +148,77 @@ def plot_message_reel_proportions_pie(type_counts):
     plt.tight_layout()
     plt.show()
 
+def plot_message_reel_proportions_bar(type_counts):
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+
+    your_data = type_counts.loc['You', ['Message', 'Reel']]
+    your_data.plot(kind='bar', ax=axes[0], color=['skyblue', 'orange'])
+    axes[0].set_title("Your Messages")
+    axes[0].set_ylabel("Count")
+
+    friend_data = type_counts.loc['Friend', ['Message', 'Reel']]
+    friend_data.plot(kind='bar', ax=axes[1], color=['skyblue', 'orange'])
+    axes[1].set_title("Friend's Messages")
+    axes[1].set_ylabel("Count")
+
+    plt.tight_layout()
+    plt.show()
 
 # Uncomment to plot
-plot_monthly_message_counts(monthly_counts)
-plot_heatmaps(your_heatmap_data, friend_heatmap_data)
-plot_message_reel_proportions_pie(type_counts)
+#plot_monthly_message_counts(monthly_counts)
+#plot_heatmaps(your_heatmap_data, friend_heatmap_data)
+#plot_message_reel_proportions_pie(type_counts)
+#plot_message_reel_proportions_bar(type_counts)
+
+# Classify messages into weekdays and weekends
+def classify_day_type(day):
+    if day in ['Saturday', 'Sunday']:
+        return 'Weekend'
+    return 'Weekday'
+
+your_messages['DayType'] = your_messages['Day'].apply(classify_day_type)
+friend_messages['DayType'] = friend_messages['Day'].apply(classify_day_type)
+
+# Filter reels and group by DayType
+your_reel_counts = your_messages[your_messages['Type'] == 'Reel'].groupby('DayType').size()
+friend_reel_counts = friend_messages[friend_messages['Type'] == 'Reel'].groupby('DayType').size()
+
+# Combine weekday and weekend counts
+all_reel_counts = pd.concat([
+    your_reel_counts.rename('You'),
+    friend_reel_counts.rename('Friend')
+], axis=1).fillna(0)
+
+print("\nReel Counts by Day Type:")
+print(all_reel_counts)
+
+# Perform t-test for weekdays vs. weekends
+your_weekday_counts = your_messages[(your_messages['Type'] == 'Reel') & (your_messages['DayType'] == 'Weekday')].groupby(your_messages['Timestamp'].dt.date).size()
+your_weekend_counts = your_messages[(your_messages['Type'] == 'Reel') & (your_messages['DayType'] == 'Weekend')].groupby(your_messages['Timestamp'].dt.date).size()
+
+friend_weekday_counts = friend_messages[(friend_messages['Type'] == 'Reel') & (friend_messages['DayType'] == 'Weekday')].groupby(friend_messages['Timestamp'].dt.date).size()
+friend_weekend_counts = friend_messages[(friend_messages['Type'] == 'Reel') & (friend_messages['DayType'] == 'Weekend')].groupby(friend_messages['Timestamp'].dt.date).size()
+
+# Perform t-tests
+t_stat_your, p_value_your = ttest_ind(
+    your_weekday_counts, your_weekend_counts, alternative='two-sided', nan_policy='omit'
+)
+t_stat_friend, p_value_friend = ttest_ind(
+    friend_weekday_counts, friend_weekend_counts, alternative='two-sided', nan_policy='omit'
+)
+
+# Results
+print("\nYour Reel Sharing T-Test Results:")
+print(f"T-statistic: {t_stat_your}, P-value: {p_value_your}")
+if p_value_your < 0.05:
+    print("Significant difference in your reel-sharing activity between weekdays and weekends.")
+else:
+    print("No significant difference in your reel-sharing activity between weekdays and weekends.")
+
+print("\nFriend's Reel Sharing T-Test Results:")
+print(f"T-statistic: {t_stat_friend}, P-value: {p_value_friend}")
+if p_value_friend < 0.05:
+    print("Significant difference in your friend's reel-sharing activity between weekdays and weekends.")
+else:
+    print("No significant difference in your friend's reel-sharing activity between weekdays and weekends.")
+
