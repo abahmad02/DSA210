@@ -208,6 +208,7 @@ The images in the readme can be expanded by clicking on them
 - Average Sentiment of Messages Containing Hashtags:
 - My Messages: 0.14
 - Friend's Messages: 0.13
+- The low score suggests that the hashtags do not give any meaningful information about the average sentiment of the messages exchanged.
   
 ## **Conclusion:**
 - Based on the results of the hypothesis tests and visualizations, I send significantly more messages and reels than my friend.
