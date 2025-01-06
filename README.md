@@ -38,63 +38,177 @@ The goal of this project is to analyze my Instagram usage, specifically the mess
 ## 6. **Visualization:**
 ### **Monthly Message Count Bar Charts**
 
-Purpose: Displays the monthly message counts for each year, categorized by sender.
-Visualization Method: Stacked bar charts, plotted for each year using matplotlib.
+- Purpose: Displays the monthly message counts for each year, categorized by sender.
+- Visualization Method: Stacked bar charts, plotted for each year using matplotlib.
 
 ### **Heatmaps of Message Activity**
 
-Purpose: Visualizes the distribution of message activity across days of the week and hours of the day for both users.
-Visualization Method: Heatmaps created using seaborn.
+- Purpose: Visualizes the distribution of message activity across days of the week and hours of the day for both users.
+- Visualization Method: Heatmaps created using seaborn.
 
 ### **Pie Charts of Message and Reel Proportions**
 
-Purpose: Shows the proportion of regular messages versus reels for each sender.
-Visualization Method: Pie charts, plotted separately for each sender using matplotlib.
+- Purpose: Shows the proportion of regular messages versus reels for each sender.
+- Visualization Method: Pie charts, plotted separately for each sender using matplotlib.
 
 ### **Bar Charts for Message and Reel Counts**
 
-Purpose: Provides a breakdown of the counts for regular messages and reels for each sender.
-Visualization Method: Side-by-side bar charts using matplotlib.
+- Purpose: Provides a breakdown of the counts for regular messages and reels for each sender.
+- Visualization Method: Side-by-side bar charts using matplotlib.
 
 ### **Hourly and Daily Message Counts**
 
-Purpose: Displays the frequency of messages sent by hour of the day and by day of the week.
-Visualization Method: Bar charts using matplotlib.
+- Purpose: Displays the frequency of messages sent by hour of the day and by day of the week.
+- Visualization Method: Bar charts using matplotlib.
 
 ### **T-Distribution vs Normal Distribution Plot**
 
-Purpose: Compares the t-distribution to a normal distribution for hypothesis testing results.
-Visualization Method: Line plots of distributions, with t-statistic markers using matplotlib.
+- Purpose: Compares the t-distribution to a normal distribution for hypothesis testing results.
+- Visualization Method: Line plots of distributions, with t-statistic markers using matplotlib.
 
 ### **Top Hashtags Bar Charts**
 
-Purpose: Highlights the top 10 hashtags used by each sender.
-Visualization Method: Horizontal bar charts created using seaborn.
+- Purpose: Highlights the top 10 hashtags used by each sender.
+- Visualization Method: Horizontal bar charts created using seaborn.
 
 ### **Hashtag Usage Over Time**
 
-Purpose: Shows trends in hashtag usage over time (grouped by month and year).
-Visualization Method: Line charts with markers using matplotlib.
+- Purpose: Shows trends in hashtag usage over time (grouped by month and year).
+- Visualization Method: Line charts with markers using matplotlib.
 ---
 
 ## **Libraries and Tools Used:**
-- **BeautifulSoup**: To parse the HTML data obtained from Instagram.
-- **Pandas**: For data manipulation and cleaning, including converting the parsed data into DataFrames and performing aggregations.
-- **Scipy**: For conducting statistical tests such as the t-test to validate the hypothesis.
-- **Matplotlib**: For visualizing the message data, specifically creating bar charts for daily or weekly counts.
+
+- File parsing: BeautifulSoup, pandas
+- Data Handling: pandas, numpy
+- Statistical Analysis: scipy.stats, statsmodels.stats.proportion
+- Visualization: matplotlib, seaborn
+- File Handling: glob
+- String Analysis: re, collections.Counter
+- Sentiment Analysis: textblob
 
 ---
 
 ## **Results:**
-- Total Messages Sent by You: 18,845
+### General Message Statistics
+- Total Messages Sent by me: 18,845
 - Total Messages Sent by Your Friend: 13,730
-- T-statistic: 13.048
-- P-value: 8.91e-38
-- Since the P-value is extremely small, we reject the null hypothesis, meaning that I do indeed send more messages than my friend.
 
-## **Conclusion:**
-- Based on the results of the t-test and the visualizations, the hypothesis that I send more messages than my friend is supported by the data. The statistical evidence shows that I have sent significantly more messages overall and on a weekly basis. This analysis --   demonstrates how Instagram message data can be used to analyze personal communication patterns.
+- **T-Test Results:**
+- T-Statistic: 7.64
+- P-Value: 1.68e-14
+- Conclusion: Reject the null hypothesis. I send more messages than my friend.
+
+- ** This conclusion is evident in the 4 bar charts below highlighting the counts of messages sent by my friend and I from 2021-2024. Every bar shows that I send more messages to my friend instead of the other way around.
 
 - ![Monthly Message Count Chart](Project_Fig_1_Messages_Spread.png)
 
-The chart above visualizes the number of messages exchanged on a weekly basis.
+- **But then the question arises. I send a lot of reels and a lot of messages on instagram to my friend. Is there a difference in the results if I only look at the reels? First we need to look at the proportion and count for reels.**
+
+### Reel vs. Message Proportions
+
+| Sender        | Message Count | Reel Count    | Reel Proportion |
+| ------------- | ------------- | ------------- | --------------- |
+| Me            | 7,910         | 10,935        | 58.03%          |
+| Friend        | 7,168         | 6,562         | 47.79%          |
+
+- The proportions between the messages and reels can also be viewed using the pie chart and bar graph below
+
+- ![Message Proportion Pie](Project_Fig_3_Message_Proportion.png)
+- ![Message Proportion Bar](Project_Fig_4_Message_Proportion_Bar.png)
+
+- A Z-test hypothesis was conducted to see whether or not I sent more reels.
+- ** Z-Test Results: **
+- Z-Statistic: 18.29
+- P-Value: 0.000
+- Conclusion: Reject the null hypothesis. I send significantly more reels than my friend.
+
+- **Does this reel sharing have a pattern? Is there a considerable difference in the amount of reels one of us sends if it is a weekday or weekend?
+
+### Reel Sharing by Day Type
+
+| Day Type        | 	My Reels | 	Friend's Reels   |
+| ------------- | ------------- | ------------- |
+| Weekday | 7,768 | 4,378 |
+| Weekend | 3,167 | 2,184 |
+
+- A T-Test Hypothesis was conducted to see whether or not there was a significant difference in reel sharing activity between weekdays and weekends.
+- ** T-Test Results: **
+- My Reel sharing:
+  - T-stat: -0.54
+  - P-value: 0.59
+  - Conclusion: No significant difference in your reel-sharing activity between weekdays and weekends.
+   
+- Friend's Reel Sharing:
+  - T-stat: -3.26
+  - P-value: 0.0012
+  - Conclusion: Significant difference in your friend's reel-sharing activity between weekdays and weekends.
+ 
+- To verify these results, I made 2 different plots. One is a heatmap to see message count based on the time of day and the actual day itself. Another was gridspec with 4 different bar graphs. 2 of them were for the message count based on the time and the other 2 were for the message count based on the day.
+
+- ![Message Day Heatmap](Project_Fig_2_Message_Heatmap.png)
+- ![Message Day Hour Bar](Project_Fig_8_Message_Frequency_By_Hour_and_Day.png)
+
+- These visuals confirm my finding above as the heatmap shows that my friend sends more messages on the weekends as compared to on the weekdays whereas my count is more spread out with the day not defining my message count.
+  
+- These charts also reveal an interesting finding with regards to the time of day where messages were sent. Most of the messages were sent late in the night or early in the day with very few messages sent during the evening. One possibility for this reduction during the evening could be due to the fact that people spend time with their families during the evening and therefore do not send as many messages.
+- Overall, the graph reflects distinct communication habits and shared preferences for late-night messaging, but with slight variations in evening activity
+
+### Top Hashtags
+- Something else I wanted to test was the similarity in the content that we shared.
+- One way to to do this was by checking the hashtags present in each reel.
+- The top 10 hashtags were extracted for each person and compared.
+
+** My top hashtags
+  
+| Hashtag  | Count |
+| ------------- | ------------- |
+| #reels  | 1,082  |
+| #funny  | 995 |
+| #memes  | 888  |
+| #viral  | 819  |
+| #explore  | 652 |
+| #explorepage  | 633 |
+| #fyp | 632 |
+| #meme  | 610 |
+| #comedy  | 555  |
+| #trending  | 515 |
+
+** Friend's top hashtags
+  
+| Hashtag  | Count |
+| ------------- | ------------- |
+| #reels  | 653  |
+| #memes  | 524  |
+| #funny  | 463 |
+| #viral  | 447  |
+| #fyp | 398 |
+| #explorepage  | 385 |
+| #explore  | 373 |
+| #meme  | 358 |
+| #trending  | 281 |
+| #reelsinstagram  | 194 |
+
+- Apart from these, All reels sent had 5,161 common hashtags.
+- The hashtag analysis highlights common themes in our shared content, with humor and trending topics dominating. This was expected as we share reels that one found "funny" or "humorous".
+- The table above can be visualized below through the bar plots
+
+- ![My Hashtags](Project_Fig_5_My_Hashtags.png)
+- ![Friends Hashtags](Project_Fig_6_Friends_Hashtags.png)
+
+- Furthermore, to see how often reels with similar content or hashtags were sent, line charts were created to represent the trend of hashtag presence in the sent reels.
+
+- ![My Hashtags Line](Project_Fig_7_My_Hashtag_Usage.png)
+- ![Friends Hashtags Line](Project_Fig_7_Friend_Hashtag_Usage.png)
+
+- Can these hashtags be used to understand the sentiment of the reesl? To do this ```textblob``` was used to perform a sentiment on the hashtags.
+- Average Sentiment of Messages Containing Hashtags:
+- My Messages: 0.14
+- Friend's Messages: 0.13
+  
+## **Conclusion:**
+- Based on the results of the hypothesis tests and visualizations, I send significantly more messages and reels than my friend.
+- My reel-sharing activity does not differ significantly between weekdays and weekends, but my friend's does.
+- The hashtag analysis highlights common themes in our shared content, with humor and trending topics dominating.
+- **This analysis demonstrates how Instagram data can reveal meaningful insights into personal communication patterns.**
+
