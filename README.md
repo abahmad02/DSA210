@@ -102,7 +102,7 @@ The images in the readme can be expanded by clicking on them
 - P-Value: 1.68e-14
 - Conclusion: Reject the null hypothesis. I send more messages than my friend.
 
-- ** This conclusion is evident in the 4 bar charts below highlighting the counts of messages sent by my friend and I from 2021-2024. Every bar shows that I send more messages to my friend instead of the other way around.
+- **This conclusion is evident in the 4 bar charts below highlighting the counts of messages sent by my friend and I from 2021-2024. Every bar shows that I send more messages to my friend instead of the other way around.**
 
 - ![Monthly Message Count Chart](Project_Fig_1_Messages_Spread.png)
 
@@ -121,12 +121,12 @@ The images in the readme can be expanded by clicking on them
 - ![Message Proportion Bar](Project_Fig_4_Message_Proportion_Bar.png)
 
 - A Z-test hypothesis was conducted to see whether or not I sent more reels.
-- ** Z-Test Results: **
+- **Z-Test Results:**
 - Z-Statistic: 18.29
 - P-Value: 0.000
 - Conclusion: Reject the null hypothesis. I send significantly more reels than my friend.
 
-- **Does this reel sharing have a pattern? Is there a considerable difference in the amount of reels one of us sends if it is a weekday or weekend?
+- **Does this reel sharing have a pattern? Is there a considerable difference in the amount of reels one of us sends if it is a weekday or weekend?**
 
 ### Reel Sharing by Day Type
 
@@ -136,7 +136,7 @@ The images in the readme can be expanded by clicking on them
 | Weekend | 3,167 | 2,184 |
 
 - A T-Test Hypothesis was conducted to see whether or not there was a significant difference in reel sharing activity between weekdays and weekends.
-- ** T-Test Results: **
+- **T-Test Results:**
 - My Reel sharing:
   - T-stat: -0.54
   - P-value: 0.59
@@ -162,7 +162,7 @@ The images in the readme can be expanded by clicking on them
 - One way to to do this was by checking the hashtags present in each reel.
 - The top 10 hashtags were extracted for each person and compared.
 
-** My top hashtags
+**My top hashtags**
   
 | Hashtag  | Count |
 | ------------- | ------------- |
@@ -177,7 +177,7 @@ The images in the readme can be expanded by clicking on them
 | #comedy  | 555  |
 | #trending  | 515 |
 
-** Friend's top hashtags
+**Friend's top hashtags**
   
 | Hashtag  | Count |
 | ------------- | ------------- |
