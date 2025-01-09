@@ -243,7 +243,3 @@ While I am more active in sending messages and reels, our shared themes and inte
 Overall, this project demonstrates the power of leveraging personal data for meaningful insights and opens doors to exciting opportunities for similar analyses in other contexts.
 
 It also shows me that I spend way too much time on instagram. Maybe I should to look at other ways to effectively spend my time rather than waste so much of it on reels 
-
-While I am more active in sending messages and reels, our shared themes and interests are evident in the overlap of hashtags and late-night activity patterns. These findings not only highlight the depth of our online interactions but also provide a foundation for further exploration, such as analyzing sentiment, exploring temporal patterns over longer durations, or even incorporating multimedia content analysis.
-
-Overall, this project demonstrates the power of leveraging personal data for meaningful insights and opens doors to exciting opportunities for similar analyses in other contexts.
