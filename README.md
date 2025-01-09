@@ -204,7 +204,7 @@ The images in the readme can be expanded by clicking on them
 - ![My Hashtags Line](Project_Fig_7_My_Hashtag_Usage.png)
 - ![Friends Hashtags Line](Project_Fig_7_Friend_Hashtag_Usage.png)
 
-- Can these hashtags be used to understand the sentiment of the reels? To do this ```textblob``` was used to perform a sentiment on the hashtags.
+- Can these hashtags be used to understand the sentiment of the reels? To do this ```textblob``` was used to perform a sentiment analysis on the hashtags.
 - Average Sentiment of Messages Containing Hashtags:
 - My Messages: 0.14
 - Friend's Messages: 0.13
