@@ -102,7 +102,7 @@ The images in the readme can be expanded by clicking on them
 - P-Value: 1.68e-14
 - Conclusion: Reject the null hypothesis. I send more messages than my friend.
 
-- ** This conclusion is evident in the 4 bar charts below highlighting the counts of messages sent by my friend and I from 2021-2024. Every bar shows that I send more messages to my friend instead of the other way around.
+- **This conclusion is evident in the 4 bar charts below highlighting the counts of messages sent by my friend and I from 2021-2024. Every bar shows that I send more messages to my friend instead of the other way around.**
 
 - ![Monthly Message Count Chart](Project_Fig_1_Messages_Spread.png)
 
@@ -121,12 +121,12 @@ The images in the readme can be expanded by clicking on them
 - ![Message Proportion Bar](Project_Fig_4_Message_Proportion_Bar.png)
 
 - A Z-test hypothesis was conducted to see whether or not I sent more reels.
-- ** Z-Test Results: **
+- **Z-Test Results:**
 - Z-Statistic: 18.29
 - P-Value: 0.000
 - Conclusion: Reject the null hypothesis. I send significantly more reels than my friend.
 
-- **Does this reel sharing have a pattern? Is there a considerable difference in the amount of reels one of us sends if it is a weekday or weekend?
+- **Does this reel sharing have a pattern? Is there a considerable difference in the amount of reels one of us sends if it is a weekday or weekend?**
 
 ### Reel Sharing by Day Type
 
@@ -136,7 +136,7 @@ The images in the readme can be expanded by clicking on them
 | Weekend | 3,167 | 2,184 |
 
 - A T-Test Hypothesis was conducted to see whether or not there was a significant difference in reel sharing activity between weekdays and weekends.
-- ** T-Test Results: **
+- **T-Test Results:**
 - My Reel sharing:
   - T-stat: -0.54
   - P-value: 0.59
@@ -162,7 +162,7 @@ The images in the readme can be expanded by clicking on them
 - One way to to do this was by checking the hashtags present in each reel.
 - The top 10 hashtags were extracted for each person and compared.
 
-** My top hashtags
+**My top hashtags**
   
 | Hashtag  | Count |
 | ------------- | ------------- |
@@ -177,7 +177,7 @@ The images in the readme can be expanded by clicking on them
 | #comedy  | 555  |
 | #trending  | 515 |
 
-** Friend's top hashtags
+**Friend's top hashtags**
   
 | Hashtag  | Count |
 | ------------- | ------------- |
@@ -204,15 +204,42 @@ The images in the readme can be expanded by clicking on them
 - ![My Hashtags Line](Project_Fig_7_My_Hashtag_Usage.png)
 - ![Friends Hashtags Line](Project_Fig_7_Friend_Hashtag_Usage.png)
 
-- Can these hashtags be used to understand the sentiment of the reesl? To do this ```textblob``` was used to perform a sentiment on the hashtags.
+- Can these hashtags be used to understand the sentiment of the reels? To do this ```textblob``` was used to perform a sentiment analysis on the hashtags.
 - Average Sentiment of Messages Containing Hashtags:
 - My Messages: 0.14
 - Friend's Messages: 0.13
 - The low score suggests that the hashtags do not give any meaningful information about the average sentiment of the messages exchanged.
   
 ## **Conclusion:**
-- Based on the results of the hypothesis tests and visualizations, I send significantly more messages and reels than my friend.
-- My reel-sharing activity does not differ significantly between weekdays and weekends, but my friend's does.
-- The hashtag analysis highlights common themes in our shared content, with humor and trending topics dominating.
-- **This analysis demonstrates how Instagram data can reveal meaningful insights into personal communication patterns.**
+The analysis of Instagram message data between me and my friend provided intriguing insights into our messaging habits, reel-sharing behavior, and content trends. Below are the key takeaways from this study:
 
+**Overall Messaging Trends:**
+
+- I sent significantly more messages than my friend over the analyzed period, as confirmed by statistical tests and visualizations.
+The difference in messaging behavior between us is consistent across all years analyzed.
+
+**Reel-Sharing Patterns:**
+
+- Reel-sharing constitutes a significant portion of our messages, with reels accounting for over 58% of my sent messages compared to 47% of my friend's.
+I send significantly more reels than my friend, as demonstrated by the Z-test results.
+While my reel-sharing activity does not significantly vary between weekdays and weekends, my friend shares noticeably more reels on weekends.
+
+**Timing of Message Activity:**
+
+- Both of us exhibit late-night messaging patterns, with a drop in activity during the evening hours, likely due to shared personal routines.
+- The heatmap and bar charts show that my friend's activity peaks on weekends, whereas mine is more evenly distributed throughout the week.
+
+**Hashtag Usage and Content Trends:**
+
+- The hashtag analysis reveals a strong overlap in the type of content we share, with humor, trending topics, and viral reels dominating.
+- The most frequently used hashtags (#reels, #funny, #memes, #viral) indicate our shared interest in humorous and engaging content.
+- The sentiment analysis of hashtags suggests that while they provide insights into the type of content shared, they are not sufficient for determining the overall emotional tone of the reels exchanged.
+- Shared Content Similarities:
+
+- The presence of 5,161 common hashtags emphasizes the shared nature of the content we exchange, reflecting similar tastes and interests.
+
+While I am more active in sending messages and reels, our shared themes and interests are evident in the overlap of hashtags and late-night activity patterns. These findings not only highlight the depth of our online interactions but also provide a foundation for further exploration, such as analyzing sentiment, exploring temporal patterns over longer durations, or even incorporating multimedia content analysis.
+
+Overall, this project demonstrates the power of leveraging personal data for meaningful insights and opens doors to exciting opportunities for similar analyses in other contexts.
+
+It also shows me that I spend way too much time on instagram. Maybe I should to look at other ways to effectively spend my time rather than waste so much of it on reels 

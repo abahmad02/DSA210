@@ -29,7 +29,7 @@ df[['Date', 'Time']] = df['Timestamp'].str.extract(r'(\w+ \d{1,2}, \d{4}) (.+)')
 
 # Separate messages
 user_messages = df[df['Sender'] == "Abdullah Ahmad"]
-friend_messages = df[df['Sender'] == "Muhammad Faizan"]
+friend_messages = df[df['Sender'] == "##NAME_REDACTED##"]
 
 # Save results to CSV files for further analysis
 user_messages.to_csv("your_messages_1.csv", index=False)
